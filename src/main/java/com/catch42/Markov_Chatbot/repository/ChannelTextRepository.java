@@ -62,4 +62,23 @@ public interface ChannelTextRepository extends CrudRepository<TextEntry, Long> {
 			" WHERE key = :key AND nextKey = :nextKey "
 			)
 	public List<Object[]> getIdByKeyAndNextKey(@Param("key") String key, @Param("nextKey") String nextKey);
+	
+	/**
+	 * Get the current count of chains
+	 * @return
+	 */
+	@Query( " SELECT COUNT(e)" +
+			" FROM TextEntry e")
+	public List<Object> getMarkovChainCount();
+	
+	/**
+	 * Get a particular markov chain by id
+	 * @param id
+	 * @return
+	 */
+	@Query( " SELECT id, key, nextKey " +
+			" FROM TextEntry e " +
+			" WHERE id = :id ")
+	public List<Object[]> getMarkChainById(@Param("id") Long id);
+	
 }

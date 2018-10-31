@@ -9,6 +9,8 @@ import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +27,7 @@ public class TextEntry {
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id", nullable=false)
+	@JsonIgnore
     private Long id;
 	
 	@Column(name="key", nullable=true)

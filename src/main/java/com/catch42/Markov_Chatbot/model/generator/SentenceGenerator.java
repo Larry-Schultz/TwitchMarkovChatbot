@@ -84,13 +84,17 @@ public class SentenceGenerator {
 	 * @return
 	 */
 	public String getRandomStarterString() {
-		List<Object[]> queryResults = this.repository.getAllText();
-		List<TextEntry> actualResults = TextEntryFactory.convertHibernateResultsToTextEntryList(queryResults);
-		TextEntry randomlySelectedTextEntry = Util.<TextEntry>getRandomElementFromList(actualResults);
+		List<Object> queryResults = this.repository.getMarkovChainCount();
+		Long count = (Long) queryResults.get(0);
+		Long randomlySelectedTextEntryId = new Long(Util.getRandomLong(count));
 		
 		String randomStarter = null;
-		if(randomlySelectedTextEntry != null) {
-			randomStarter = randomlySelectedTextEntry.getKey();
+		if(randomlySelectedTextEntryId != null) {
+			List<Object[]> randomMarkovChain = this.repository.getMarkChainById(randomlySelectedTextEntryId);
+			List<TextEntry> randomEntries = TextEntryFactory.convertHibernateResultsToTextEntryList(randomMarkovChain);
+			if(randomEntries.size() > 0) {
+				randomStarter = randomEntries.get(0).getKey();
+			}
 		}
 		return randomStarter;
 	}

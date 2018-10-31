@@ -41,6 +41,11 @@ public class Util {
     	return getRandom().nextInt(bound);
     }
     
+    public static long getRandomLong(long bound) {
+    	long result = getRandom().nextLong() % bound;
+    	return result;
+    }
+    
     private static synchronized Random getRandom() {
     	return random;
     }
