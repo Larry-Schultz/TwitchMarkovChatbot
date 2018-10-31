@@ -37,39 +37,10 @@ public class App {
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
     }
-    
-    @Value("${irc.username}")
-    private String username;
-    
-    @Value("${irc.password}")
-    private String password;
-    
-    
+
     @Bean
     public SentenceGenerator sentenceGenerator(ChannelTextRepository repository) {
     	return new SentenceGenerator(repository, 20, 3);
-    }
-    
-    @Bean
-    public IrcChatbotThread ircBot(Router<ChatMessage> chatMessageRouter) {
-    	IrcChatbotThread thread = new IrcChatbotThread(this.username, this.password, chatMessageRouter);
-    	thread.start();
-    	return thread;
-    	
-    }
-    
-    @Bean
-    public ChannelTextRepositoryThread channelTextRepositoryThread(BlockingQueue<ChatMessage> repositoryBoundChatMessagesQueue, ChannelTextRepository repository) {
-    	ChannelTextRepositoryThread thread = new ChannelTextRepositoryThread(repositoryBoundChatMessagesQueue, repository);
-    	thread.start();
-    	return thread;
-    }
-    
-    @Bean
-    public SentenceGeneratorThread sentenceGeneratorThread(Router<String> generatedSentenceRouter, SentenceGenerator sentenceGenerator) {
-    	SentenceGeneratorThread thread = new SentenceGeneratorThread(generatedSentenceRouter, sentenceGenerator);
-    	thread.start();
-    	return thread;
     }
     
     @Bean

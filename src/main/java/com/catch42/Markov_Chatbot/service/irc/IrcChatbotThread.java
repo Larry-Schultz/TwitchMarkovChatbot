@@ -16,9 +16,11 @@ public class IrcChatbotThread extends Thread {
 	private static final Logger log = LoggerFactory.getLogger(IrcChatbotThread.class);
 	
 	private PircBotX bot;
+	private String channel;
 	
-	public IrcChatbotThread(String username, String password, Router<ChatMessage> chatMessageRouter) {
+	public IrcChatbotThread(String username, String password, String channel, Router<ChatMessage> chatMessageRouter) {
 		super(IrcChatbotThread.class.getName());
+		this.channel = channel;
     	//Configure what we want our bot to do
         Configuration configuration = new Configuration.Builder()
         		.setAutoNickChange(false) //Twitch doesn't support multiple users
@@ -28,7 +30,7 @@ public class IrcChatbotThread extends Thread {
         		.addServer("irc.twitch.tv")
         		.setName(username) //Your twitch.tv username
         		.setServerPassword(password) //Your oauth password from http://twitchapps.com/tmi
-        		.addAutoJoinChannel("#dansgaming") //Some twitch channel
+        		.addAutoJoinChannel("#" + channel) //Some twitch channel
                 .addListener(new TwitchChatListenerAdapter(chatMessageRouter)) //Add our listener that will be called on Events
                 .buildConfiguration();
 
@@ -38,6 +40,7 @@ public class IrcChatbotThread extends Thread {
 	
 	public void run() {
 		log.info("Starting IrcChatbotThread");
+		log.info("Joining channel: " + "#" + this.channel);
         try {
 			bot.startBot();
 		} catch (IOException | IrcException e) {

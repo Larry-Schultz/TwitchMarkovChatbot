@@ -49,26 +49,24 @@ function sendName() {
 }
 
 function showGreeting(message) {
-	console.log(message)
+	//console.log(message)
 	message.forEach(function(chatMessage){
 		$("#greetings").prepend("<tr><td><strong>" + chatMessage.username + ": </strong>" +  chatMessage.message + "</td></tr>");
 	});
 	var greetingLength = $("#greetings").children().length;
 	if(greetingLength > 50) {
-		var remainder = 50 - greetingLength
-		$("#greetings").children().slice(-1, remainder).remove()
+		$("#greetings").children().slice(50, greetingLength).remove();
 	};
 }
 
 function showSentences(message) {
-	console.log(message);
+	//console.log(message);
 	message.forEach(function(sentence) {
 		$("#sentences").prepend("<li>" + sentence +"</li>");
 	});
 	var sentencesLength = $("#sentences").children().length;
 	if(sentencesLength > 50) {
-		var remainder = 50 - sentencesLength
-		$("#sentences").children().slice(-1, remainder).remove()
+		$("#sentences").children().slice(50, sentencesLength).remove();
 	};
 }
 	
