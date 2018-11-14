@@ -25,7 +25,7 @@ public class SentenceGeneratorManager {
 		}
 		//set up threads to create sentences
 		List<Future<String>> futureResultsList = new ArrayList<Future<String>>();
-		ExecutorService service = Executors.newFixedThreadPool(actualNumberOfTries, Executors.defaultThreadFactory());
+		ExecutorService service = Executors.newFixedThreadPool(50, Executors.defaultThreadFactory());
 		int numberOfNonStarterRuns = numberOfTries;
 		
 		//if we have a starter, use it for the first value

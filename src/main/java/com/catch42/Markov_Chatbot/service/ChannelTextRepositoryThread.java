@@ -1,4 +1,4 @@
-package com.catch42.Markov_Chatbot.repository;
+package com.catch42.Markov_Chatbot.service;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +13,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import com.catch42.Markov_Chatbot.model.ChatMessage;
 import com.catch42.Markov_Chatbot.model.TextEntry;
-import com.catch42.Markov_Chatbot.model.TextEntryFactory;
+import com.catch42.Markov_Chatbot.model.generator.TextEntryFactory;
+import com.catch42.Markov_Chatbot.repository.ChannelTextRepository;
 
 public class ChannelTextRepositoryThread extends Thread {
 	private Logger log = LoggerFactory.getLogger(ChannelTextRepositoryThread.class);

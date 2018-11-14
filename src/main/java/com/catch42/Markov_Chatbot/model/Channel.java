@@ -14,11 +14,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "ChatMessage")
+@Table(name = "Channels")
 @Data
 @AllArgsConstructor 
 @NoArgsConstructor
-public class ChatMessage {
+public class Channel {
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -26,23 +26,15 @@ public class ChatMessage {
 	@JsonIgnore
 	private Long id;
 	
-	@Column(name="channel", nullable=true)
-	private String channel;
+	@Column(name="channelName", nullable=true, unique=true)
+	private String channelName;
 	
-	@Column(name="username", nullable=true)
-	private String username;
-	
-	@Column(name="message", nullable=true)
-	private String message;
-
-	public ChatMessage(String username, String message) {
-		this.username = username;
-		this.message = message;
+	public Channel(String channelName) {
+		this.channelName = channelName;
 	}
 	
-	public ChatMessage(String channel, String username, String message) {
-		this.channel = channel;
-		this.username = username;
-		this.message = message;
+	public Channel(Object[] objArray) {
+		this.id = (Long) objArray[0];
+		this.channelName = (String) objArray[1];
 	}
 }

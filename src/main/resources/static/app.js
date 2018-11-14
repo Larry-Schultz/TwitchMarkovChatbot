@@ -1,5 +1,6 @@
 var stompClient = null;
 var sentencesStompClient = null;
+var channelsStompClient = null;
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -34,6 +35,16 @@ function connect() {
 	            showSentences(JSON.parse(message.body));
         });
     });
+    
+    var socket3 = new SockJS('/gs-guide-websocket');
+    channelsStompClient = Stomp.over(socket3);
+    channelsStompClient.connect({}, function(frame) {
+	    	setConnected(true);
+	        //console.log('Connected: ' + frame);
+	        stompClient.subscribe('/chain/channels', function (message) {
+	            showChannels(JSON.parse(message.body));
+        });
+    });
 }
 
 function disconnect() {
@@ -44,14 +55,18 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function sendName() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
+function addChannel(channel) {
+	$.get("/channel/add/" + $("#addChannelTextbox").val());
+}
+
+function deleteChannel(channel) {
+    $.get("/channel/remove/" + $("#deleteChannelTextbox").val());
 }
 
 function showGreeting(message) {
 	//console.log(message)
 	message.forEach(function(chatMessage){
-		$("#greetings").prepend("<tr><td><strong>" + chatMessage.username + ": </strong>" +  chatMessage.message + "</td></tr>");
+		$("#greetings").prepend("<tr><td><strong> (#" + chatMessage.channel + ") " + chatMessage.username + ": </strong>" +  chatMessage.message + "</td></tr>");
 	});
 	var greetingLength = $("#greetings").children().length;
 	if(greetingLength > 50) {
@@ -69,12 +84,40 @@ function showSentences(message) {
 		$("#sentences").children().slice(50, sentencesLength).remove();
 	};
 }
+
+function showChannels(message) {
+	message.forEach(function(channel) {
+		var hasChannel = $("#channels").has("#"+channel)
+		var hasChannelGreaterThanZero = hasChannel.length > 0;
+		if(!hasChannelGreaterThanZero) {
+			$("#channels").prepend("<ul id=\"" + channel + "\" >#" + channel + "</ul>")
+		}
+	});
+	
+	var currentChannels = $('#channels').map(function(){
+    	return $(this).attr('id');
+  	}).get();
+	
+	var removeIds = [];
+	$('#channels').children().each(function() {
+		var id = $(this).attr('id');
+		var findResult = message.indexOf(id)
+		if(findResult < 0) {
+			removeIds.push(id);
+		}
+	});
+	
+	removeIds.forEach(function(id) {
+		$('#channels').children().remove('#'+id);
+	});
+}
 	
 $(function () {
     $("form").on('submit', function (e) {
         e.preventDefault();
-    });
+    }); 
     $( "#connect" ).click(function() { connect(); });
     $( "#disconnect" ).click(function() { disconnect(); });
-    $( "#send" ).click(function() { sendName(); });
+    $( "#addChannelButton" ).click(function() { addChannel(); });
+    $( "#deleteChannelButton" ).click(function() { deleteChannel(); });
 });

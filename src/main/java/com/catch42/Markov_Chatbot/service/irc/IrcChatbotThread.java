@@ -31,7 +31,7 @@ public class IrcChatbotThread extends Thread {
         		.setName(username) //Your twitch.tv username
         		.setServerPassword(password) //Your oauth password from http://twitchapps.com/tmi
         		.addAutoJoinChannel("#" + channel) //Some twitch channel
-                .addListener(new TwitchChatListenerAdapter(chatMessageRouter)) //Add our listener that will be called on Events
+                .addListener(new TwitchChatListenerAdapter(chatMessageRouter, channel)) //Add our listener that will be called on Events
                 .buildConfiguration();
 
         //Create our bot with the configuration
@@ -47,6 +47,10 @@ public class IrcChatbotThread extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void killBot() {
+		this.bot.close();
 	}
 
 }

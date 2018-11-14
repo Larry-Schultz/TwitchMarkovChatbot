@@ -22,9 +22,9 @@ import com.catch42.Markov_Chatbot.model.TextEntry;
 import com.catch42.Markov_Chatbot.model.generator.SentenceGenerator;
 import com.catch42.Markov_Chatbot.model.generator.SentenceGeneratorManager;
 import com.catch42.Markov_Chatbot.model.generator.SentenceGeneratorThread;
-import com.catch42.Markov_Chatbot.model.TextEntryFactory;
+import com.catch42.Markov_Chatbot.model.generator.TextEntryFactory;
 import com.catch42.Markov_Chatbot.repository.ChannelTextRepository;
-import com.catch42.Markov_Chatbot.repository.ChannelTextRepositoryThread;
+import com.catch42.Markov_Chatbot.service.ChannelTextRepositoryThread;
 import com.catch42.Markov_Chatbot.service.irc.IrcChatbotThread;
 import com.catch42.Markov_Chatbot.service.irc.TwitchChatListenerAdapter;
 import com.catch42.Markov_Chatbot.util.Router;
@@ -36,11 +36,6 @@ public class App {
 	
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
-    }
-
-    @Bean
-    public SentenceGenerator sentenceGenerator(ChannelTextRepository repository) {
-    	return new SentenceGenerator(repository, 20, 3);
     }
     
     @Bean

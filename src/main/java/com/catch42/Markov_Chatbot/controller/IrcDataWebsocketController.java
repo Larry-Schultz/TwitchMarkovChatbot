@@ -2,18 +2,23 @@ package com.catch42.Markov_Chatbot.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.catch42.Markov_Chatbot.model.ChatMessage;
+import com.catch42.Markov_Chatbot.service.irc.IrcChatbotService;
+import com.catch42.Markov_Chatbot.service.irc.IrcChatbotThread;
 
 @EnableScheduling
 @Controller
@@ -27,6 +32,9 @@ public class IrcDataWebsocketController {
 	
 	@Autowired
 	private BlockingQueue<String> websocketBoundSentenceQueue;
+	
+	@Autowired
+	private IrcChatbotService ircChatbotService;
 	
 	@Scheduled(fixedRate = 5000)
     public void chatMessage() throws Exception {
@@ -54,5 +62,23 @@ public class IrcDataWebsocketController {
         	}
 		}
 		this.template.convertAndSend("/chain/generatedSentences", generatedSentenceList);
+	}
+	
+	@Scheduled(fixedRate = 5000)
+	public void channelList() throws Exception {
+		List<String> channels = this.ircChatbotService.channels();
+		this.template.convertAndSend("/chain/channels", channels);
+	}
+	
+	@RequestMapping(value = "/channel/add/{channelName}", method = RequestMethod.GET)
+	public @ResponseBody String addChannel(@PathVariable("channelName") String channelName) {
+		this.ircChatbotService.addChannel(channelName.replace("#", ""));
+		return "";
+	}
+	
+	@RequestMapping(value = "/channel/remove/{channelName}", method = RequestMethod.GET)
+	public @ResponseBody String removeChannel(@PathVariable("channelName") String channelName) {
+		this.ircChatbotService.removeChannel(channelName.replace("#", ""));
+		return "";
 	}
 }

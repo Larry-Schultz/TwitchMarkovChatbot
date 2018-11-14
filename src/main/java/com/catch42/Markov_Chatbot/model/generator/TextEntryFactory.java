@@ -1,4 +1,4 @@
-package com.catch42.Markov_Chatbot.model;
+package com.catch42.Markov_Chatbot.model.generator;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.catch42.Markov_Chatbot.model.TextEntry;
 import com.google.common.base.CharMatcher;
 
 public class TextEntryFactory {

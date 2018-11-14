@@ -10,26 +10,25 @@ import java.util.stream.IntStream;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.catch42.Markov_Chatbot.model.TextEntryFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import com.catch42.Markov_Chatbot.model.TextEntry;
 import com.catch42.Markov_Chatbot.repository.ChannelTextRepository;
 import com.catch42.Markov_Chatbot.util.Util;
 
+@Service
 public class SentenceGenerator {
 	private Logger log = LoggerFactory.getLogger(SentenceGenerator.class);
 	
+	@Autowired
 	private ChannelTextRepository repository;
 	
+	@Value("20")
 	private Integer nFactor;
+	@Value("3")
 	private Integer variance;
-	
-	public SentenceGenerator() {}
-	
-	public SentenceGenerator(ChannelTextRepository repository, Integer nFactor, Integer variance) {
-		this.repository = repository;
-		this.nFactor = nFactor;
-		this.variance = variance;
-	}
 	
 	/**
 	 * Generates a string by looking up markov chain links from the database.
@@ -108,7 +107,7 @@ public class SentenceGenerator {
 	public String fancyString(String str) {
 		String result = StringUtils.capitalize(str);
 		
-		//replace lowercase i with I.
+		//replace lowercase i with I, includes I'm and I've.
 		result = StringUtils.replacePattern(result, 
 				"((^i(?=\\s))|((?<=\\s)i($|(?=\\.)|(?=\\?)|(?=!)))|((?<=\\s)i(?=\\s)))|(i(?=\\'m))|(i(?=\\'ve))", 
 				"I");
