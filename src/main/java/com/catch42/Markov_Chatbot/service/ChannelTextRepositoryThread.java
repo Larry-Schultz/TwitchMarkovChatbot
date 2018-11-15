@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.catch42.Markov_Chatbot.model.ChatMessage;
-import com.catch42.Markov_Chatbot.model.TextEntry;
-import com.catch42.Markov_Chatbot.repository.ChannelTextRepository;
+import com.catch42.Markov_Chatbot.model.MarkovChain;
+import com.catch42.Markov_Chatbot.repository.MarkovChainRepository;
 
 public class ChannelTextRepositoryThread extends Thread {
 	private Logger log = LoggerFactory.getLogger(ChannelTextRepositoryThread.class);
@@ -23,9 +23,9 @@ public class ChannelTextRepositoryThread extends Thread {
 	private MarkovGeneratorService markovGeneratorService;
 	
 	private BlockingQueue<ChatMessage> repositoryBoundChatMessagesQueue;
-	private ChannelTextRepository repository;
+	private MarkovChainRepository repository;
 	
-	public ChannelTextRepositoryThread(BlockingQueue<ChatMessage> repositoryBoundChatMessagesQueue, ChannelTextRepository repository) {
+	public ChannelTextRepositoryThread(BlockingQueue<ChatMessage> repositoryBoundChatMessagesQueue, MarkovChainRepository repository) {
 		super(ChannelTextRepositoryThread.class.getName());
 		this.repository = repository;
 		this.repositoryBoundChatMessagesQueue = repositoryBoundChatMessagesQueue;
@@ -61,8 +61,8 @@ public class ChannelTextRepositoryThread extends Thread {
 	 * @param str
 	 */
 	public void addString(String str) {
-		Collection<TextEntry> textEntries = this.markovGeneratorService.generateMarkovChains(str);
-		for(TextEntry entry : textEntries) {
+		Collection<MarkovChain> textEntries = this.markovGeneratorService.generateMarkovChains(str);
+		for(MarkovChain entry : textEntries) {
 			try {
 				if(!this.isTextEntryAlreadyInDatbase(entry)) {
 					this.repository.save(entry);
@@ -73,7 +73,7 @@ public class ChannelTextRepositoryThread extends Thread {
 		}
 	}
 	
-	public boolean isTextEntryAlreadyInDatbase(TextEntry entry) {
+	public boolean isTextEntryAlreadyInDatbase(MarkovChain entry) {
 		List<Object[]> idResult = this.repository.getIdByKeyAndNextKey(entry.getKey(), entry.getNextKey());
 		return idResult != null && idResult.size() != 0;
 	}

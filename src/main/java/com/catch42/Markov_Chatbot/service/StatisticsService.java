@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.catch42.Markov_Chatbot.model.ApplicationStatistics;
-import com.catch42.Markov_Chatbot.repository.ChannelTextRepository;
+import com.catch42.Markov_Chatbot.repository.MarkovChainRepository;
 
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
@@ -24,7 +24,7 @@ public class StatisticsService {
 	private static final Logger log_ = LoggerFactory.getLogger(StatisticsService.class);
 	
 	@Autowired
-	private ChannelTextRepository channelTextRepository;
+	private MarkovChainRepository markovChainRepository;
 	
 	private SystemInfo si;
 
@@ -86,7 +86,7 @@ public class StatisticsService {
 	}
 	
 	public Long getTotalMarkovChains() {
-		List<Object> queryResults = this.channelTextRepository.getMarkovChainCount();
+		List<Object> queryResults = this.markovChainRepository.getMarkovChainCount();
 		Long count = (Long) queryResults.get(0);
 		return count;
 	}

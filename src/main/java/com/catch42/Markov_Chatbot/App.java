@@ -18,8 +18,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import com.catch42.Markov_Chatbot.model.ChatMessage;
-import com.catch42.Markov_Chatbot.model.TextEntry;
-import com.catch42.Markov_Chatbot.repository.ChannelTextRepository;
+import com.catch42.Markov_Chatbot.model.MarkovChain;
+import com.catch42.Markov_Chatbot.repository.MarkovChainRepository;
 import com.catch42.Markov_Chatbot.service.ChannelTextRepositoryThread;
 import com.catch42.Markov_Chatbot.service.MarkovGeneratorServiceImpl;
 import com.catch42.Markov_Chatbot.service.irc.IrcChatbotThread;

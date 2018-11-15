@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import com.catch42.Markov_Chatbot.model.Channel;
 import com.catch42.Markov_Chatbot.model.ChatMessage;
 import com.catch42.Markov_Chatbot.repository.ChannelRepository;
-import com.catch42.Markov_Chatbot.repository.ChannelTextRepository;
+import com.catch42.Markov_Chatbot.repository.MarkovChainRepository;
 import com.catch42.Markov_Chatbot.service.ChannelTextRepositoryThread;
 import com.catch42.Markov_Chatbot.service.irc.IrcChatbotThread;
 import com.catch42.Markov_Chatbot.service.sentence.SentenceGeneratorService;
@@ -59,8 +59,8 @@ public class ThreadConfig {
     }
     
     @Bean
-    public ChannelTextRepositoryThread channelTextRepositoryThread(BlockingQueue<ChatMessage> repositoryBoundChatMessagesQueue, ChannelTextRepository repository) {
-    	ChannelTextRepositoryThread thread = new ChannelTextRepositoryThread(repositoryBoundChatMessagesQueue, repository);
+    public ChannelTextRepositoryThread channelTextRepositoryThread(BlockingQueue<ChatMessage> repositoryBoundChatMessagesQueue, MarkovChainRepository markovChainRepository) {
+    	ChannelTextRepositoryThread thread = new ChannelTextRepositoryThread(repositoryBoundChatMessagesQueue, markovChainRepository);
     	thread.start();
     	return thread;
     }

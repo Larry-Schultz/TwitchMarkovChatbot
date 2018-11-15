@@ -6,16 +6,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import com.catch42.Markov_Chatbot.model.TextEntry;
+import com.catch42.Markov_Chatbot.model.MarkovChain;
 
-public interface ChannelTextRepository extends CrudRepository<TextEntry, Long> {
+public interface MarkovChainRepository extends CrudRepository<MarkovChain, Long> {
 
 	/**
 	 * Get all entries in the repo
 	 * @return
 	 */
 	@Query( " SELECT id, key, nextKey" +
-		    " FROM TextEntry")
+		    " FROM MarkovChain")
 	public List<Object[]> getAllText();
 	
 	/**
@@ -24,9 +24,9 @@ public interface ChannelTextRepository extends CrudRepository<TextEntry, Long> {
 	 * @return
 	 */
 	@Query( " SELECt id, key, nextKey" + 
-			" FROM TextEntry " +
+			" FROM MarkovChain " +
 			" WHERE key= :key")
-	public List<TextEntry> getTextByChannelAndKey(@Param("key") String key);
+	public List<MarkovChain> getTextByChannelAndKey(@Param("key") String key);
 	
 	/**
 	 * Pull the next possible chains given a key, and a list of previous chains that we don't want to replicate.
@@ -36,7 +36,7 @@ public interface ChannelTextRepository extends CrudRepository<TextEntry, Long> {
 	 * @return
 	 */
 	@Query( "SELECT id, key, nextKey" +
-			" FROM TextEntry entry " +
+			" FROM MarkovChain entry " +
 			" WHERE entry.key = :nextKeyValue AND entry.key NOT IN (:chains)" )
 	public List<Object[]> getNextMarkovchain(@Param("nextKeyValue") String nextKeyValue, @Param("chains") List<String> chains);
 	
@@ -47,7 +47,7 @@ public interface ChannelTextRepository extends CrudRepository<TextEntry, Long> {
 	 * @return
 	 */
 	@Query( "SELECT id, key, nextKey" +
-			" FROM TextEntry entry " +
+			" FROM MarkovChain entry " +
 			" WHERE entry.key = :nextKeyValue " )
 	public List<Object[]> getNextMarkovchain(@Param("nextKeyValue") String nextKeyValue);
 	
@@ -58,7 +58,7 @@ public interface ChannelTextRepository extends CrudRepository<TextEntry, Long> {
 	 * @return
 	 */
 	@Query( " SELECT id" +
-			" FROM TextEntry " +
+			" FROM MarkovChain " +
 			" WHERE key = :key AND nextKey = :nextKey "
 			)
 	public List<Object[]> getIdByKeyAndNextKey(@Param("key") String key, @Param("nextKey") String nextKey);
@@ -68,7 +68,7 @@ public interface ChannelTextRepository extends CrudRepository<TextEntry, Long> {
 	 * @return
 	 */
 	@Query( " SELECT COUNT(e)" +
-			" FROM TextEntry e")
+			" FROM MarkovChain e")
 	public List<Object> getMarkovChainCount();
 	
 	/**
@@ -77,7 +77,7 @@ public interface ChannelTextRepository extends CrudRepository<TextEntry, Long> {
 	 * @return
 	 */
 	@Query( " SELECT id, key, nextKey " +
-			" FROM TextEntry e " +
+			" FROM MarkovChain e " +
 			" WHERE id = :id ")
 	public List<Object[]> getMarkovChainById(@Param("id") Long id);
 	

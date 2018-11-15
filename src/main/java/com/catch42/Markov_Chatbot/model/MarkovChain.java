@@ -16,13 +16,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "TextEntry", 
-		indexes= {@Index(name="idIndex", columnList="id", unique=true), @Index(name="keyIndex", columnList="key", unique=false)},
+@Table(name = "MarkovChain", 
+		indexes= {@Index(name="markovChainIdIndex", columnList="id", unique=true), @Index(name="markovChainKeyIndex", columnList="key", unique=false)},
 		uniqueConstraints = {@UniqueConstraint(columnNames = {"key", "nextKey"})})
 @Data
 @AllArgsConstructor 
 @NoArgsConstructor
-public class TextEntry {
+public class MarkovChain {
 
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -36,12 +36,12 @@ public class TextEntry {
 	@Column(name="nextKey", nullable=true)
 	private String nextKey;
 	
-	public TextEntry(String key, String text, Integer remainingTextLength) {
+	public MarkovChain(String key, String text, Integer remainingTextLength) {
 		this.key = key;
 		this.nextKey = text;
 	}
 	
-	public TextEntry(Object[] obj) {
+	public MarkovChain(Object[] obj) {
 		this.id = (Long) obj[0];
 		this.key = (String)obj[1];
 		this.nextKey = (String)obj[2];

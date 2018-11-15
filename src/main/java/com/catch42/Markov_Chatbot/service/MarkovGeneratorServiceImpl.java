@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.catch42.Markov_Chatbot.model.TextEntry;
+import com.catch42.Markov_Chatbot.model.MarkovChain;
 
 public class MarkovGeneratorServiceImpl extends MarkovGeneratorServiceAbstract {
 	private static final Logger log = LoggerFactory.getLogger(MarkovGeneratorServiceImpl.class);
@@ -25,8 +25,8 @@ public class MarkovGeneratorServiceImpl extends MarkovGeneratorServiceAbstract {
 	 * @param stringCollection
 	 * @return
 	 */
-	public Collection<TextEntry> generateMarkovChains(Collection<String> stringCollection) {
-		Collection<TextEntry> results = new LinkedList<>();
+	public Collection<MarkovChain> generateMarkovChains(Collection<String> stringCollection) {
+		Collection<MarkovChain> results = new LinkedList<>();
 		
 		for(String str: stringCollection) {
 			results.addAll(this.generateMarkovChains(str));
@@ -40,8 +40,8 @@ public class MarkovGeneratorServiceImpl extends MarkovGeneratorServiceAbstract {
 	 * @param str
 	 * @return
 	 */
-	public Collection<TextEntry> generateMarkovChains(String str) {
-		Collection<TextEntry> results = new LinkedList<>();
+	public Collection<MarkovChain> generateMarkovChains(String str) {
+		Collection<MarkovChain> results = new LinkedList<>();
 		
 		String filteredString = filterString(str);
 		
@@ -66,7 +66,7 @@ public class MarkovGeneratorServiceImpl extends MarkovGeneratorServiceAbstract {
 					nextString = splitStrings.get(i +1);
 				}
 				
-				results.add(new TextEntry(currentString, nextString, (splitStrings.size() -1) - i));
+				results.add(new MarkovChain(currentString, nextString, (splitStrings.size() -1) - i));
 			}
 			
 		}
@@ -81,9 +81,9 @@ public class MarkovGeneratorServiceImpl extends MarkovGeneratorServiceAbstract {
 	 * @param queryResults
 	 * @return
 	 */
-	public List<TextEntry> convertHibernateResultsToTextEntryList(List<Object[]> queryResults)
+	public List<MarkovChain> convertHibernateResultsToTextEntryList(List<Object[]> queryResults)
 	{
-		List<TextEntry> results = queryResults.stream().map(name -> new TextEntry(name))
+		List<MarkovChain> results = queryResults.stream().map(name -> new MarkovChain(name))
 				.collect(Collectors.toList());
 		
 		return results;

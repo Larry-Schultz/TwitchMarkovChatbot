@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.catch42.Markov_Chatbot.model.TextEntry;
-import com.catch42.Markov_Chatbot.repository.ChannelTextRepository;
+import com.catch42.Markov_Chatbot.model.MarkovChain;
+import com.catch42.Markov_Chatbot.repository.MarkovChainRepository;
 import com.catch42.Markov_Chatbot.service.MarkovGeneratorService;
 import com.catch42.Markov_Chatbot.util.Util;
 
@@ -24,7 +24,7 @@ public class SentenceGeneratorService {
 	private Logger log = LoggerFactory.getLogger(SentenceGeneratorService.class);
 	
 	@Autowired
-	private ChannelTextRepository repository;
+	private MarkovChainRepository markovChainRepository;
 	
 	@Autowired
 	private MarkovGeneratorService markovGeneratorService;
@@ -52,18 +52,18 @@ public class SentenceGeneratorService {
 		while(actualLength > 0 && blankNextKeyEntryNotFound) { 
 			List<Object[]> queryResults = new ArrayList<Object[]>();
 			if(chains.size() > 0) {
-				queryResults = this.repository.getNextMarkovchain(currentKey, chains);
+				queryResults = this.markovChainRepository.getNextMarkovchain(currentKey, chains);
 			} else {
-				queryResults = this.repository.getNextMarkovchain(currentKey);
+				queryResults = this.markovChainRepository.getNextMarkovchain(currentKey);
 			}
 			//convert the queryResults to actual results
-			List<TextEntry> currentEntries = this.markovGeneratorService.convertHibernateResultsToTextEntryList(queryResults);
+			List<MarkovChain> currentEntries = this.markovGeneratorService.convertHibernateResultsToTextEntryList(queryResults);
 			log.debug("start list");
-			for(TextEntry entry : currentEntries) {
+			for(MarkovChain entry : currentEntries) {
 				log.debug(entry.toString());
 			}
 			log.debug("end list");
-			TextEntry entry = Util.<TextEntry>getRandomElementFromList(currentEntries);
+			MarkovChain entry = Util.<MarkovChain>getRandomElementFromList(currentEntries);
 			
 			if(entry == null || entry.getNextKey() == null) {
 				blankNextKeyEntryNotFound = false;
@@ -87,14 +87,14 @@ public class SentenceGeneratorService {
 	 * @return
 	 */
 	public String getRandomStarterString() {
-		List<Object> queryResults = this.repository.getMarkovChainCount();
+		List<Object> queryResults = this.markovChainRepository.getMarkovChainCount();
 		Long count = (Long) queryResults.get(0);
 		Long randomlySelectedTextEntryId = new Long(Util.getRandomLong(count));
 		
 		String randomStarter = null;
 		if(randomlySelectedTextEntryId != null) {
-			List<Object[]> randomMarkovChain = this.repository.getMarkovChainById(randomlySelectedTextEntryId);
-			List<TextEntry> randomEntries = this.markovGeneratorService.convertHibernateResultsToTextEntryList(randomMarkovChain);
+			List<Object[]> randomMarkovChain = this.markovChainRepository.getMarkovChainById(randomlySelectedTextEntryId);
+			List<MarkovChain> randomEntries = this.markovGeneratorService.convertHibernateResultsToTextEntryList(randomMarkovChain);
 			if(randomEntries.size() > 0) {
 				randomStarter = randomEntries.get(0).getKey();
 			}
@@ -130,7 +130,7 @@ public class SentenceGeneratorService {
 		return result;
 	}
 	
-	public ChannelTextRepository getRepository() {
-		return this.repository;
+	public MarkovChainRepository getRepository() {
+		return this.markovChainRepository;
 	}
 }
