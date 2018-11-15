@@ -16,33 +16,33 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "ChatMessage")
 @Data
-@AllArgsConstructor 
+@AllArgsConstructor
 @NoArgsConstructor
 public class ChatMessage {
-	
-	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id", nullable=false)
-	@JsonIgnore
-	private Long id;
-	
-	@Column(name="channel", nullable=true)
-	private String channel;
-	
-	@Column(name="username", nullable=true)
-	private String username;
-	
-	@Column(name="message", nullable=true)
-	private String message;
 
-	public ChatMessage(String username, String message) {
-		this.username = username;
-		this.message = message;
-	}
-	
-	public ChatMessage(String channel, String username, String message) {
-		this.channel = channel;
-		this.username = username;
-		this.message = message;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    @JsonIgnore
+    private Long id;
+
+    @Column(name = "channel", nullable = true)
+    private String channel;
+
+    @Column(name = "username", nullable = true)
+    private String username;
+
+    @Column(name = "message", nullable = true)
+    private String message;
+
+    public ChatMessage(String username, String message) {
+        this.username = username;
+        this.message = message;
+    }
+
+    public ChatMessage(String channel, String username, String message) {
+        this.channel = channel;
+        this.username = username;
+        this.message = message;
+    }
 }

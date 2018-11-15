@@ -5,12 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor 
+@AllArgsConstructor
 @NoArgsConstructor
 public class ApplicationStatistics {
 
-	public String cpuUsage;
-	public String ramUsage;
-	public String markovChainCount;
+    public String cpuUsage;
+    public String ramUsage;
+    public String markovChainCount;
 
 }

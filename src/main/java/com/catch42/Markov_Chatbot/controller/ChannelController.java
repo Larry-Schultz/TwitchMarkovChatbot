@@ -12,19 +12,19 @@ import com.catch42.Markov_Chatbot.service.irc.IrcChatbotService;
 @Controller
 public class ChannelController {
 
-	@Autowired
-	private IrcChatbotService ircChatbotService;
-	
-	@RequestMapping(value = "/channel/add/{channelName}", method = RequestMethod.GET)
-	public @ResponseBody String addChannel(@PathVariable("channelName") String channelName) {
-		this.ircChatbotService.addChannel(channelName.replace("#", ""));
-		return "";
-	}
-	
-	@RequestMapping(value = "/channel/remove/{channelName}", method = RequestMethod.GET)
-	public @ResponseBody String removeChannel(@PathVariable("channelName") String channelName) {
-		this.ircChatbotService.removeChannel(channelName.replace("#", ""));
-		return "";
-	}
+    @Autowired
+    private IrcChatbotService ircChatbotService;
+
+    @RequestMapping(value = "/channel/add/{channelName}", method = RequestMethod.GET)
+    public @ResponseBody String addChannel(@PathVariable("channelName") String channelName) {
+        this.ircChatbotService.addChannel(channelName.replace("#", ""));
+        return "";
+    }
+
+    @RequestMapping(value = "/channel/remove/{channelName}", method = RequestMethod.GET)
+    public @ResponseBody String removeChannel(@PathVariable("channelName") String channelName) {
+        this.ircChatbotService.removeChannel(channelName.replace("#", ""));
+        return "";
+    }
 
 }

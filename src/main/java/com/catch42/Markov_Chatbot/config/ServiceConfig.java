@@ -9,10 +9,10 @@ import com.catch42.Markov_Chatbot.service.MarkovGeneratorServiceImpl;
 
 @Configuration
 public class ServiceConfig {
-	
-	@Bean
-	public MarkovGeneratorService markovGeneratorService(@Value("${markovChain.maxLength}") int maxWordLength) {
-		return new MarkovGeneratorServiceImpl(maxWordLength);
-	}
+
+    @Bean
+    public MarkovGeneratorService markovGeneratorService(@Value("${markovChain.maxLength}") int maxWordLength) {
+        return new MarkovGeneratorServiceImpl(maxWordLength);
+    }
 
 }

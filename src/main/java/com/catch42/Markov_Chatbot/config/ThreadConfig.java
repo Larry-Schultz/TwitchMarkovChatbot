@@ -25,51 +25,53 @@ public class ThreadConfig {
 
     @Value("${irc.username}")
     private String username;
-    
+
     @Value("${irc.password}")
     private String password;
-    
-/*    @Bean
-    public List<String> ircChannels() {
-    	List<String> channels = new ArrayList<String>();
-    	channels.add("dansgaming");
-    	channels.add("dolphinchemist");
-    	channels.add("streamfourstar");
-    	channels.add("ragtagg");
-    	
-    	return channels;
-    }*/
-    
+
+    /*
+     * @Bean public List<String> ircChannels() { List<String> channels = new ArrayList<String>();
+     * channels.add("dansgaming"); channels.add("dolphinchemist"); channels.add("streamfourstar");
+     * channels.add("ragtagg");
+     * 
+     * return channels; }
+     */
+
     @Bean
-    public Map<String, IrcChatbotThread> ircBotMap(Router<ChatMessage> chatMessageRouter, ChannelRepository channelRepository) {
-    	List<Object[]> allChannelResults = channelRepository.getAllChannels();
-    	List<Channel> channelList = new ArrayList<>();
-    	for(Object[] result: allChannelResults) {
-    		channelList.add(new Channel(result));
-    	}
-    	
-    	Map<String, IrcChatbotThread> ircBots = new HashMap<String, IrcChatbotThread>();
-    	for(Channel ircChannel: channelList) {
-	    	IrcChatbotThread thread = new IrcChatbotThread(this.username, this.password, ircChannel.getChannelName(), chatMessageRouter);
-	    	thread.start();
-	    	ircBots.put(ircChannel.getChannelName(), thread);
-    	}
-    	return ircBots;
-    	
+    public Map<String, IrcChatbotThread> ircBotMap(Router<ChatMessage> chatMessageRouter,
+            ChannelRepository channelRepository) {
+        List<Object[]> allChannelResults = channelRepository.getAllChannels();
+        List<Channel> channelList = new ArrayList<>();
+        for (Object[] result : allChannelResults) {
+            channelList.add(new Channel(result));
+        }
+
+        Map<String, IrcChatbotThread> ircBots = new HashMap<String, IrcChatbotThread>();
+        for (Channel ircChannel : channelList) {
+            IrcChatbotThread thread = new IrcChatbotThread(this.username, this.password, ircChannel.getChannelName(),
+                    chatMessageRouter);
+            thread.start();
+            ircBots.put(ircChannel.getChannelName(), thread);
+        }
+        return ircBots;
+
     }
-    
+
     @Bean
-    public ChannelTextRepositoryThread channelTextRepositoryThread(BlockingQueue<ChatMessage> repositoryBoundChatMessagesQueue, MarkovChainRepository markovChainRepository) {
-    	ChannelTextRepositoryThread thread = new ChannelTextRepositoryThread(repositoryBoundChatMessagesQueue, markovChainRepository);
-    	thread.start();
-    	return thread;
+    public ChannelTextRepositoryThread channelTextRepositoryThread(
+            BlockingQueue<ChatMessage> repositoryBoundChatMessagesQueue, MarkovChainRepository markovChainRepository) {
+        ChannelTextRepositoryThread thread = new ChannelTextRepositoryThread(repositoryBoundChatMessagesQueue,
+                markovChainRepository);
+        thread.start();
+        return thread;
     }
-    
+
     @Bean
-    public SentenceGeneratorThread sentenceGeneratorThread(Router<String> generatedSentenceRouter, SentenceGeneratorService sentenceGeneratorService) {
-    	SentenceGeneratorThread thread = new SentenceGeneratorThread(generatedSentenceRouter, sentenceGeneratorService);
-    	thread.start();
-    	return thread;
+    public SentenceGeneratorThread sentenceGeneratorThread(Router<String> generatedSentenceRouter,
+            SentenceGeneratorService sentenceGeneratorService) {
+        SentenceGeneratorThread thread = new SentenceGeneratorThread(generatedSentenceRouter, sentenceGeneratorService);
+        thread.start();
+        return thread;
     }
-	
+
 }

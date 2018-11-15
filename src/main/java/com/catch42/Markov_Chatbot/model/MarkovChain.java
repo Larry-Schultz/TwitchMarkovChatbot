@@ -16,36 +16,35 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "MarkovChain", 
-		indexes= {@Index(name="markovChainIdIndex", columnList="id", unique=true), @Index(name="markovChainKeyIndex", columnList="key", unique=false)},
-		uniqueConstraints = {@UniqueConstraint(columnNames = {"key", "nextKey"})})
+@Table(name = "MarkovChain", indexes = { @Index(name = "markovChainIdIndex", columnList = "id", unique = true),
+        @Index(name = "markovChainKeyIndex", columnList = "key", unique = false) }, uniqueConstraints = {
+                @UniqueConstraint(columnNames = { "key", "nextKey" }) })
 @Data
-@AllArgsConstructor 
+@AllArgsConstructor
 @NoArgsConstructor
 public class MarkovChain {
 
-	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id", nullable=false)
-	@JsonIgnore
-    private Long id; 
-	
-	@Column(name="key", nullable=true)
-	private String key;
-	
-	@Column(name="nextKey", nullable=true)
-	private String nextKey;
-	
-	public MarkovChain(String key, String text, Integer remainingTextLength) {
-		this.key = key;
-		this.nextKey = text;
-	}
-	
-	public MarkovChain(Object[] obj) {
-		this.id = (Long) obj[0];
-		this.key = (String)obj[1];
-		this.nextKey = (String)obj[2];
-	}
-	
-	
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    @JsonIgnore
+    private Long id;
+
+    @Column(name = "key", nullable = true)
+    private String key;
+
+    @Column(name = "nextKey", nullable = true)
+    private String nextKey;
+
+    public MarkovChain(String key, String text, Integer remainingTextLength) {
+        this.key = key;
+        this.nextKey = text;
+    }
+
+    public MarkovChain(Object[] obj) {
+        this.id = (Long) obj[0];
+        this.key = (String) obj[1];
+        this.nextKey = (String) obj[2];
+    }
+
 }

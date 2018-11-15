@@ -32,25 +32,26 @@ import com.catch42.Markov_Chatbot.util.Router;
 @SpringBootApplication
 public class App {
 
-	private static final Logger log = LoggerFactory.getLogger(App.class);
-	
+    private static final Logger log = LoggerFactory.getLogger(App.class);
+
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
     }
-    
+
     @Bean
-	public CommandLineRunner demo(SentenceGeneratorService sentenceGeneratorService, ChannelTextRepositoryThread channelTextRepositoryThread,
-			BlockingQueue<String> commandLineExampleSentenceQueue) {
-    	return (args) -> {
-			while(true) {
-				try {
-					String sentence = commandLineExampleSentenceQueue.take();
-					log.info("example sentence: " + sentence);
-				} catch(InterruptedException e) {
-					break; //exit loop
-				}
-			}
-    	};
+    public CommandLineRunner demo(SentenceGeneratorService sentenceGeneratorService,
+            ChannelTextRepositoryThread channelTextRepositoryThread,
+            BlockingQueue<String> commandLineExampleSentenceQueue) {
+        return (args) -> {
+            while (true) {
+                try {
+                    String sentence = commandLineExampleSentenceQueue.take();
+                    log.info("example sentence: " + sentence);
+                } catch (InterruptedException e) {
+                    break; // exit loop
+                }
+            }
+        };
     }
-    
+
 }
