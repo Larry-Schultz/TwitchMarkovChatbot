@@ -28,7 +28,7 @@ public class MarkovChain {
     @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id", nullable=false)
 	@JsonIgnore
-    private Long id;
+    private Long id; 
 	
 	@Column(name="key", nullable=true)
 	private String key;
