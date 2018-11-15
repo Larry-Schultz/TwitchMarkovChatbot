@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.catch42.Markov_Chatbot.model.ChatMessage;
-import com.catch42.Markov_Chatbot.model.generator.SentenceGenerator;
+import com.catch42.Markov_Chatbot.service.sentence.SentenceGeneratorService;
 import com.catch42.Markov_Chatbot.util.Router;
 
 public class TwitchChatListenerAdapter extends ListenerAdapter {

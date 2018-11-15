@@ -19,14 +19,14 @@ import org.springframework.context.annotation.Bean;
 
 import com.catch42.Markov_Chatbot.model.ChatMessage;
 import com.catch42.Markov_Chatbot.model.TextEntry;
-import com.catch42.Markov_Chatbot.model.generator.SentenceGenerator;
-import com.catch42.Markov_Chatbot.model.generator.SentenceGeneratorManager;
-import com.catch42.Markov_Chatbot.model.generator.SentenceGeneratorThread;
-import com.catch42.Markov_Chatbot.model.generator.TextEntryFactory;
 import com.catch42.Markov_Chatbot.repository.ChannelTextRepository;
 import com.catch42.Markov_Chatbot.service.ChannelTextRepositoryThread;
+import com.catch42.Markov_Chatbot.service.MarkovGeneratorServiceImpl;
 import com.catch42.Markov_Chatbot.service.irc.IrcChatbotThread;
 import com.catch42.Markov_Chatbot.service.irc.TwitchChatListenerAdapter;
+import com.catch42.Markov_Chatbot.service.sentence.SentenceGeneratorManager;
+import com.catch42.Markov_Chatbot.service.sentence.SentenceGeneratorService;
+import com.catch42.Markov_Chatbot.service.sentence.SentenceGeneratorThread;
 import com.catch42.Markov_Chatbot.util.Router;
 
 @SpringBootApplication
@@ -39,7 +39,7 @@ public class App {
     }
     
     @Bean
-	public CommandLineRunner demo(SentenceGenerator sentenceGenerator, ChannelTextRepositoryThread channelTextRepositoryThread,
+	public CommandLineRunner demo(SentenceGeneratorService sentenceGeneratorService, ChannelTextRepositoryThread channelTextRepositoryThread,
 			BlockingQueue<String> commandLineExampleSentenceQueue) {
     	return (args) -> {
 			while(true) {

@@ -1,4 +1,4 @@
-package com.catch42.Markov_Chatbot.model.generator;
+package com.catch42.Markov_Chatbot.service.sentence;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,9 +12,9 @@ public class SentenceGeneratorThread extends Thread {
 	private static final Integer threads = 20;
 	
 	private Router<String> generatedSentenceRouter;
-	private SentenceGenerator sentenceGenerator;
+	private SentenceGeneratorService sentenceGenerator;
 	
-	public SentenceGeneratorThread(Router<String> generatedSentenceRouter, SentenceGenerator sentenceGenerator) {
+	public SentenceGeneratorThread(Router<String> generatedSentenceRouter, SentenceGeneratorService sentenceGenerator) {
 		super(SentenceGeneratorThread.class.getName());
 		this.generatedSentenceRouter = generatedSentenceRouter;
 		this.sentenceGenerator = sentenceGenerator;

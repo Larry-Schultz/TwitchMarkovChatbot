@@ -1,4 +1,4 @@
-package com.catch42.Markov_Chatbot.model.generator;
+package com.catch42.Markov_Chatbot.service.sentence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +16,18 @@ import org.springframework.stereotype.Service;
 
 import com.catch42.Markov_Chatbot.model.TextEntry;
 import com.catch42.Markov_Chatbot.repository.ChannelTextRepository;
+import com.catch42.Markov_Chatbot.service.MarkovGeneratorService;
 import com.catch42.Markov_Chatbot.util.Util;
 
 @Service
-public class SentenceGenerator {
-	private Logger log = LoggerFactory.getLogger(SentenceGenerator.class);
+public class SentenceGeneratorService {
+	private Logger log = LoggerFactory.getLogger(SentenceGeneratorService.class);
 	
 	@Autowired
 	private ChannelTextRepository repository;
+	
+	@Autowired
+	private MarkovGeneratorService markovGeneratorService;
 	
 	@Value("20")
 	private Integer nFactor;
@@ -53,7 +57,7 @@ public class SentenceGenerator {
 				queryResults = this.repository.getNextMarkovchain(currentKey);
 			}
 			//convert the queryResults to actual results
-			List<TextEntry> currentEntries = TextEntryFactory.convertHibernateResultsToTextEntryList(queryResults);
+			List<TextEntry> currentEntries = this.markovGeneratorService.convertHibernateResultsToTextEntryList(queryResults);
 			log.debug("start list");
 			for(TextEntry entry : currentEntries) {
 				log.debug(entry.toString());
@@ -90,7 +94,7 @@ public class SentenceGenerator {
 		String randomStarter = null;
 		if(randomlySelectedTextEntryId != null) {
 			List<Object[]> randomMarkovChain = this.repository.getMarkovChainById(randomlySelectedTextEntryId);
-			List<TextEntry> randomEntries = TextEntryFactory.convertHibernateResultsToTextEntryList(randomMarkovChain);
+			List<TextEntry> randomEntries = this.markovGeneratorService.convertHibernateResultsToTextEntryList(randomMarkovChain);
 			if(randomEntries.size() > 0) {
 				randomStarter = randomEntries.get(0).getKey();
 			}

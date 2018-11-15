@@ -1,4 +1,4 @@
-package com.catch42.Markov_Chatbot.model.generator;
+package com.catch42.Markov_Chatbot.service.sentence;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -14,7 +14,7 @@ public class SentenceGeneratorManager {
 
 	public static Integer maxNumberOfThreads = 25;
 	
-	public static String getBestGeneratedText(SentenceGenerator generatorRef, Integer numberOfTries, String starter) {
+	public static String getBestGeneratedText(SentenceGeneratorService generatorRef, Integer numberOfTries, String starter) {
 		//leave if we don't need to try
 		Integer actualNumberOfTries = numberOfTries;
 		if(numberOfTries == null || numberOfTries <= 0) {
@@ -70,14 +70,14 @@ public class SentenceGeneratorManager {
 
 class SentenceGeneratorCallable implements Callable<String> {
 
-	private SentenceGenerator sentenceGeneratorRef;
+	private SentenceGeneratorService sentenceGeneratorRef;
 	private String starter;
 	
-	public SentenceGeneratorCallable(SentenceGenerator generatorRef) {
+	public SentenceGeneratorCallable(SentenceGeneratorService generatorRef) {
 		this.sentenceGeneratorRef = generatorRef;
 	}
 	
-	public SentenceGeneratorCallable(SentenceGenerator generatorRef, String starter) {
+	public SentenceGeneratorCallable(SentenceGeneratorService generatorRef, String starter) {
 		this.sentenceGeneratorRef = generatorRef;
 		this.starter = starter;
 	}

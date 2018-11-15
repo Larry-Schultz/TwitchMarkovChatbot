@@ -12,12 +12,12 @@ import org.springframework.context.annotation.Configuration;
 
 import com.catch42.Markov_Chatbot.model.Channel;
 import com.catch42.Markov_Chatbot.model.ChatMessage;
-import com.catch42.Markov_Chatbot.model.generator.SentenceGenerator;
-import com.catch42.Markov_Chatbot.model.generator.SentenceGeneratorThread;
 import com.catch42.Markov_Chatbot.repository.ChannelRepository;
 import com.catch42.Markov_Chatbot.repository.ChannelTextRepository;
 import com.catch42.Markov_Chatbot.service.ChannelTextRepositoryThread;
 import com.catch42.Markov_Chatbot.service.irc.IrcChatbotThread;
+import com.catch42.Markov_Chatbot.service.sentence.SentenceGeneratorService;
+import com.catch42.Markov_Chatbot.service.sentence.SentenceGeneratorThread;
 import com.catch42.Markov_Chatbot.util.Router;
 
 @Configuration
@@ -66,8 +66,8 @@ public class ThreadConfig {
     }
     
     @Bean
-    public SentenceGeneratorThread sentenceGeneratorThread(Router<String> generatedSentenceRouter, SentenceGenerator sentenceGenerator) {
-    	SentenceGeneratorThread thread = new SentenceGeneratorThread(generatedSentenceRouter, sentenceGenerator);
+    public SentenceGeneratorThread sentenceGeneratorThread(Router<String> generatedSentenceRouter, SentenceGeneratorService sentenceGeneratorService) {
+    	SentenceGeneratorThread thread = new SentenceGeneratorThread(generatedSentenceRouter, sentenceGeneratorService);
     	thread.start();
     	return thread;
     }

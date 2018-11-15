@@ -9,15 +9,18 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.catch42.Markov_Chatbot.model.ChatMessage;
 import com.catch42.Markov_Chatbot.model.TextEntry;
-import com.catch42.Markov_Chatbot.model.generator.TextEntryFactory;
 import com.catch42.Markov_Chatbot.repository.ChannelTextRepository;
 
 public class ChannelTextRepositoryThread extends Thread {
 	private Logger log = LoggerFactory.getLogger(ChannelTextRepositoryThread.class);
+	
+	@Autowired
+	private MarkovGeneratorService markovGeneratorService;
 	
 	private BlockingQueue<ChatMessage> repositoryBoundChatMessagesQueue;
 	private ChannelTextRepository repository;
@@ -58,7 +61,7 @@ public class ChannelTextRepositoryThread extends Thread {
 	 * @param str
 	 */
 	public void addString(String str) {
-		Collection<TextEntry> textEntries = TextEntryFactory.generateMarkovChains(str);
+		Collection<TextEntry> textEntries = this.markovGeneratorService.generateMarkovChains(str);
 		for(TextEntry entry : textEntries) {
 			try {
 				if(!this.isTextEntryAlreadyInDatbase(entry)) {
