@@ -89,7 +89,7 @@ public class SentenceGenerator {
 		
 		String randomStarter = null;
 		if(randomlySelectedTextEntryId != null) {
-			List<Object[]> randomMarkovChain = this.repository.getMarkChainById(randomlySelectedTextEntryId);
+			List<Object[]> randomMarkovChain = this.repository.getMarkovChainById(randomlySelectedTextEntryId);
 			List<TextEntry> randomEntries = TextEntryFactory.convertHibernateResultsToTextEntryList(randomMarkovChain);
 			if(randomEntries.size() > 0) {
 				randomStarter = randomEntries.get(0).getKey();

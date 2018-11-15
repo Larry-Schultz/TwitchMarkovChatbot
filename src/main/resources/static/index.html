@@ -13,6 +13,11 @@
     <script src="/app.js"></script>
     <script src="js/tag-it.js" type="text/javascript" charset="utf-8"></script>
     <link href="css/jquery.tagit.css" rel="stylesheet" type="text/css">
+    <style>
+    span {
+    	color: red;
+    }
+    </style>
 </head>
 <body>
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
@@ -48,6 +53,7 @@
                 <button id="deleteChannelButton" class="btn btn-default" type="submit">Send</button>
             </form>
         </div>
+        <p id="statsLine"><b>CPU Usage:</b> <span id="cpuUsageText"></span>  <b>Ram Usage:</b> <span id="ramUsageText"></span>  <b>Total Markov Chains:</b> <span id="chainCountText"></span></p>
     </div>
     <div class="row">
         <div class="col-md-12">

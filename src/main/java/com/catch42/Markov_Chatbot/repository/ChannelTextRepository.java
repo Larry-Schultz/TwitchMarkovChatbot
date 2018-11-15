@@ -79,6 +79,6 @@ public interface ChannelTextRepository extends CrudRepository<TextEntry, Long> {
 	@Query( " SELECT id, key, nextKey " +
 			" FROM TextEntry e " +
 			" WHERE id = :id ")
-	public List<Object[]> getMarkChainById(@Param("id") Long id);
+	public List<Object[]> getMarkovChainById(@Param("id") Long id);
 	
 }

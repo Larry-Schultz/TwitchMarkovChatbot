@@ -1,6 +1,7 @@
 var stompClient = null;
 var sentencesStompClient = null;
 var channelsStompClient = null;
+var statsStompclient = null;
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -43,6 +44,16 @@ function connect() {
 	        //console.log('Connected: ' + frame);
 	        stompClient.subscribe('/chain/channels', function (message) {
 	            showChannels(JSON.parse(message.body));
+        });
+    });
+    
+    var socket4 = new SockJS('/gs-guide-websocket');
+   	statsStompclient = Stomp.over(socket4);
+    statsStompclient.connect({}, function(frame) {
+	    	setConnected(true);
+	        //console.log('Connected: ' + frame);
+	        stompClient.subscribe('/chain/stats', function (message) {
+	            showStats(JSON.parse(message.body));
         });
     });
 }
@@ -110,6 +121,12 @@ function showChannels(message) {
 	removeIds.forEach(function(id) {
 		$('#channels').children().remove('#'+id);
 	});
+}
+
+function showStats(message) {
+	$('#cpuUsageText').text(message.cpuUsage);
+	$('#ramUsageText').text(message.ramUsage);
+	$('#chainCountText').text(message.markovChainCount);
 }
 	
 $(function () {
